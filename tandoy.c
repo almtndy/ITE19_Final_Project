@@ -1,6 +1,6 @@
-#include <stdio.h>  // Standard Input/Output library for file operations and printing
-#include <stdlib.h> // Standard library for general utilities (memory allocation, conversion)
-#include <string.h> // String manipulation library (e.g., for string comparison and concatenation)
+#include <stdio.h>  // Include the standard input/output library for functions like printf and scanf
+#include <stdlib.h> // Include the standard library for functions like malloc, free, etc.
+#include <string.h> // Include the string library for string manipulation functions like strcpy, strlen, etc.
 
 // Function Prototypes
 int romanValue(char c);                                        // function to convert Roman numeral characters to their decimal values
