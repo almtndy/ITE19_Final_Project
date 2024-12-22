@@ -1,21 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdio.h>  // Standard I/O library for input and output functions
+#include <stdlib.h> // Standard library for general utilities like memory allocation, program control
+#include <string.h> // Library for string handling functions like strlen, strcpy, etc.
 
 // Function Prototypes
-int romanValue(char c); // Declare the function before usage
-int romanToDecimal(char roman[]);
-void numberToWords(int num, char result[]);
-long long performOperation(int num1, int num2, char operator);
-void readInputAndProcess();
+int romanValue(char c);                                        // Function to get the decimal value of a Roman numeral character
+int romanToDecimal(char roman[]);                              // Function to convert a Roman numeral string to its decimal equivalent
+void numberToWords(int num, char result[]);                    // Function to convert a number to its word representation
+long long performOperation(int num1, int num2, char operator); // Function to perform arithmetic operations
+void readInputAndProcess();                                    // Function to read input, process data, and write results
 
-// Arrays for Roman numeral values
-int romanValues[] = {1000, 500, 100, 50, 10, 5, 1};
-char romanChars[] = {'M', 'D', 'C', 'L', 'X', 'V', 'I'};
+// Arrays for Roman numeral values and corresponding characters
+int romanValues[] = {1000, 500, 100, 50, 10, 5, 1};      // Decimal values of Roman numerals
+char romanChars[] = {'M', 'D', 'C', 'L', 'X', 'V', 'I'}; // Roman numeral characters
 
 int main()
 {
-    // Read input, process it, and write output
+    // Start the program by reading input and processing it
     readInputAndProcess();
     return 0;
 }
@@ -23,56 +23,57 @@ int main()
 // Convert a Roman numeral string to its decimal equivalent
 int romanToDecimal(char roman[])
 {
-    int total = 0;
-    int i;
-    int current, next;
+    int total = 0;     // Initialize total to store the decimal result
+    int i;             // Loop counter
+    int current, next; // Variables to store the current and next Roman numeral values
 
+    // Loop through each character in the Roman numeral string
     for (i = 0; roman[i] != '\0'; i++)
     {
-        current = romanValue(roman[i]);
-        next = romanValue(roman[i + 1]);
+        current = romanValue(roman[i]);  // Get the decimal value of the current character
+        next = romanValue(roman[i + 1]); // Get the decimal value of the next character
 
+        // Subtract if the current value is less than the next; otherwise, add
         if (current < next)
         {
-            total -= current; // Subtract if current is less than next
+            total -= current;
         }
         else
         {
-            total += current; // Otherwise, add
+            total += current;
         }
     }
 
-    return total;
+    return total; // Return the total decimal value
 }
 
-// Map Roman characters to their decimal values
+// Map Roman numeral characters to their decimal values
 int romanValue(char c)
 {
-    // Loop through the romanChars array to find the corresponding value
+    // Loop through the romanChars array to find the matching character
     for (int i = 0; i < 7; i++)
     {
         if (c == romanChars[i])
         {
-            return romanValues[i];
+            return romanValues[i]; // Return the corresponding decimal value
         }
     }
 
-    // If character is not found, return 0
-    return 0;
+    return 0; // Return 0 if the character is not a valid Roman numeral
 }
 
-// Perform arithmetic operation based on the operator
+// Perform arithmetic operation based on the given operator
 long long performOperation(int num1, int num2, char operator)
 {
-    switch (operator)
+    switch (operator) // Determine the operation based on the operator
     {
-    case '+':
+    case '+': // Addition
         return num1 + num2;
-    case '-':
+    case '-': // Subtraction
         return num1 - num2;
-    case '*':
+    case '*': // Multiplication
         return (long long)num1 * num2;
-    default:
+    default: // Invalid operator
         return 0;
     }
 }
@@ -80,11 +81,12 @@ long long performOperation(int num1, int num2, char operator)
 // Convert a number to its word representation
 void numberToWords(int num, char result[])
 {
+    // Arrays for word representations of numbers
     const char *ones[] = {"", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
     const char *tens[] = {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
     const char *teen[] = {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"};
 
-    if (num == 0)
+    if (num == 0) // Handle the special case for 0
     {
         strcpy(result, "Zero");
         return;
@@ -92,8 +94,7 @@ void numberToWords(int num, char result[])
 
     char buffer[200] = ""; // Temporary buffer to store the result
 
-    // Handle negative numbers
-    if (num < 0)
+    if (num < 0) // Handle negative numbers
     {
         strcat(buffer, "Negative ");
         num = -num; // Convert to positive for processing
@@ -126,7 +127,7 @@ void numberToWords(int num, char result[])
         sprintf(buffer + strlen(buffer), "%s Thousand ", teen[num / 1000 - 10]);
         num %= 1000;
     }
-    else if (num >= 1000)
+    else if (num >= 1000) // Convert thousands
     {
         sprintf(buffer + strlen(buffer), "%s Thousand ", ones[num / 1000]);
         num %= 1000;
@@ -165,31 +166,33 @@ void numberToWords(int num, char result[])
 // Read input from a file, process each line, and write the results to the output file
 void readInputAndProcess()
 {
+    // Open the input file for reading
     FILE *inputFile = fopen("Input.txt", "r");
+    // Open the output file for writing
     FILE *outputFile = fopen("Output.txt", "w");
 
-    if (!inputFile || !outputFile)
+    if (!inputFile || !outputFile) // Check if files opened successfully
     {
         printf("Error opening file.\n");
         return;
     }
 
-    char line[100];
-    while (fgets(line, sizeof(line), inputFile))
+    char line[100];                              // Buffer to store each line of input
+    while (fgets(line, sizeof(line), inputFile)) // Read each line from the input file
     {
-        char roman1[50], roman2[50], operator;
-        sscanf(line, "%s %c %s", roman1, &operator, roman2);
+        char roman1[50], roman2[50], operator;               // Variables to store parsed data
+        sscanf(line, "%s %c %s", roman1, &operator, roman2); // Parse the line into Roman numerals and operator
 
-        int num1 = romanToDecimal(roman1);
-        int num2 = romanToDecimal(roman2);
-        long long result = performOperation(num1, num2, operator);
+        int num1 = romanToDecimal(roman1);                         // Convert the first Roman numeral to decimal
+        int num2 = romanToDecimal(roman2);                         // Convert the second Roman numeral to decimal
+        long long result = performOperation(num1, num2, operator); // Perform the arithmetic operation
 
-        char resultWords[1000] = "";
-        numberToWords(result, resultWords);
+        char resultWords[1000] = "";        // Buffer to store the result in words
+        numberToWords(result, resultWords); // Convert the result to words
 
-        fprintf(outputFile, "%s\n", resultWords);
+        fprintf(outputFile, "%s\n", resultWords); // Write the result in words to the output file
     }
 
-    fclose(inputFile);
-    fclose(outputFile);
+    fclose(inputFile);  // Close the input file
+    fclose(outputFile); // Close the output file
 }
